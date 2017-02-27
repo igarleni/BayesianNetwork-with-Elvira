@@ -1,0 +1,239 @@
+// Bayesian Network
+//   Elvira format 
+
+bnet  "Plague" { 
+
+// Network Properties
+
+kindofgraph = "directed";
+visualprecision = "0.00";
+version = 1.0;
+default node states = (presente , ausente);
+
+// Variables 
+
+node RecursosMedicinales(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =129;
+pos_y =53;
+relevance = 7.0;
+purpose = "";
+num-states = 3;
+states = ("alto" "medio" "bajo");
+}
+
+node ResistenciaMedicamentos(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =122;
+pos_y =195;
+relevance = 7.0;
+purpose = "";
+num-states = 3;
+states = ("alto" "medio" "bajo");
+}
+
+node NivelCultural(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =459;
+pos_y =58;
+relevance = 7.0;
+purpose = "";
+num-states = 3;
+states = ("alto" "medio" "bajo");
+}
+
+node SanguineaTransmision(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =367;
+pos_y =156;
+relevance = 7.0;
+purpose = "";
+num-states = 2;
+states = ("si" "no");
+}
+
+node Epidemia(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =348;
+pos_y =354;
+relevance = 7.0;
+purpose = "";
+num-states = 2;
+states = ("presente" "ausente");
+}
+
+node FluidosTransmision(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =557;
+pos_y =153;
+relevance = 7.0;
+purpose = "";
+num-states = 2;
+states = ("si" "no");
+}
+
+node Contagioso(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =538;
+pos_y =287;
+relevance = 7.0;
+purpose = "";
+num-states = 2;
+states = ("si" "no");
+}
+
+node AmbientalTransmision(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =786;
+pos_y =197;
+relevance = 7.0;
+purpose = "";
+num-states = 2;
+states = ("si" "no");
+}
+
+node Clima(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =831;
+pos_y =42;
+relevance = 7.0;
+purpose = "";
+num-states = 3;
+states = ("Frio" "Calido" "Moderado");
+}
+
+node CalorResistencia(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =680;
+pos_y =89;
+relevance = 7.0;
+purpose = "";
+num-states = 2;
+states = ("si" "no");
+}
+
+node FrioResistencia(finite-states) {
+kind-of-node = chance;
+type-of-variable = finite-states;
+pos_x =887;
+pos_y =95;
+relevance = 7.0;
+purpose = "";
+num-states = 2;
+states = ("si" "no");
+}
+
+// Links of the associated graph:
+
+link Clima AmbientalTransmision;
+
+link NivelCultural FluidosTransmision;
+
+link NivelCultural SanguineaTransmision;
+
+link Contagioso Epidemia;
+
+link RecursosMedicinales ResistenciaMedicamentos;
+
+link CalorResistencia AmbientalTransmision;
+
+link FrioResistencia AmbientalTransmision;
+
+link ResistenciaMedicamentos Epidemia;
+
+link AmbientalTransmision Contagioso;
+
+link FluidosTransmision Contagioso;
+
+link SanguineaTransmision Contagioso;
+
+//Network Relationships: 
+
+relation RecursosMedicinales { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.2 0.65 0.15 );
+}
+
+relation NivelCultural { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.2 0.6 0.2 );
+}
+
+relation Clima { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.2 0.4 0.4 );
+}
+
+relation CalorResistencia { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.7 0.3 );
+}
+
+relation FrioResistencia { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.2 0.8 );
+}
+
+relation AmbientalTransmision Clima CalorResistencia FrioResistencia { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.7 0.01 0.75 0.01 0.7 0.75 0.02 0.02 0.8 0.75 0.65 0.55 0.3 0.99 0.25 0.99 0.3 0.25 0.98 0.98 0.2 0.25 0.35 0.45 );
+}
+
+relation SanguineaTransmision NivelCultural { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.03 0.15 0.45 0.97 0.85 0.55 );
+}
+
+relation ResistenciaMedicamentos RecursosMedicinales { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.05 0.2 0.6 0.25 0.45 0.2 0.7 0.35 0.2 );
+}
+
+relation Epidemia Contagioso ResistenciaMedicamentos { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.8 0.45 0.2 0.3 0.15 0.01 0.2 0.55 0.8 0.7 0.85 0.99 );
+}
+
+relation Contagioso AmbientalTransmision FluidosTransmision SanguineaTransmision { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.65 0.45 0.3 0.25 0.15 0.1 0.05 0.01 0.35 0.55 0.7 0.75 0.85 0.9 0.95 0.99 );
+}
+
+relation FluidosTransmision NivelCultural { 
+comment = "";
+kind-of-relation = potential;
+deterministic=false;
+values= table (0.25 0.55 0.7 0.75 0.45 0.3 );
+}
+
+}
